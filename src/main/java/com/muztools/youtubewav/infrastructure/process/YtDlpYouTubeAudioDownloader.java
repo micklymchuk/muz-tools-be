@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -28,8 +29,32 @@ public class YtDlpYouTubeAudioDownloader implements YouTubeAudioDownloader {
         Path downloadDirectory = createDirectory(workingDirectory.resolve("download"));
         String outputTemplate = downloadDirectory.resolve("%(title)s.%(ext)s").toAbsolutePath().toString();
 
+        List<String> command = new ArrayList<>(List.of(
+                properties.getYtDlpCommand(),
+                "-f", "bestaudio/best",
+                "--no-playlist",
+                "-o", outputTemplate
+        ));
+
+        if (properties.getYtDlpJsRuntimes() != null && !properties.getYtDlpJsRuntimes().isBlank()) {
+            command.add("--js-runtimes");
+            command.add(properties.getYtDlpJsRuntimes());
+        }
+
+        if (properties.getYtDlpExtractorArgs() != null && !properties.getYtDlpExtractorArgs().isBlank()) {
+            command.add("--extractor-args");
+            command.add(properties.getYtDlpExtractorArgs());
+        }
+
+        if (properties.getYtDlpCookiesFile() != null && !properties.getYtDlpCookiesFile().isBlank()) {
+            command.add("--cookies");
+            command.add(properties.getYtDlpCookiesFile());
+        }
+
+        command.add(url);
+
         commandRunner.run(
-                List.of(properties.getYtDlpCommand(), "-f", "bestaudio/best", "--no-playlist", "-o", outputTemplate, url),
+                command,
                 workingDirectory,
                 Duration.ofSeconds(properties.getDownloadTimeoutSeconds())
         );

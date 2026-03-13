@@ -16,6 +16,12 @@ public class YouTubeWavProperties {
     @NotBlank
     private String ytDlpCommand = "yt-dlp";
 
+    private String ytDlpJsRuntimes = "node";
+
+    private String ytDlpExtractorArgs;
+
+    private String ytDlpCookiesFile;
+
     @NotBlank
     private String ffmpegCommand = "ffmpeg";
 
@@ -49,6 +55,30 @@ public class YouTubeWavProperties {
 
     public void setYtDlpCommand(String ytDlpCommand) {
         this.ytDlpCommand = ytDlpCommand;
+    }
+
+    public String getYtDlpJsRuntimes() {
+        return ytDlpJsRuntimes;
+    }
+
+    public void setYtDlpJsRuntimes(String ytDlpJsRuntimes) {
+        this.ytDlpJsRuntimes = ytDlpJsRuntimes;
+    }
+
+    public String getYtDlpExtractorArgs() {
+        return ytDlpExtractorArgs;
+    }
+
+    public void setYtDlpExtractorArgs(String ytDlpExtractorArgs) {
+        this.ytDlpExtractorArgs = ytDlpExtractorArgs;
+    }
+
+    public String getYtDlpCookiesFile() {
+        return ytDlpCookiesFile;
+    }
+
+    public void setYtDlpCookiesFile(String ytDlpCookiesFile) {
+        this.ytDlpCookiesFile = ytDlpCookiesFile;
     }
 
     public String getFfmpegCommand() {
