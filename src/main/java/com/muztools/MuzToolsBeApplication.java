@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MuzToolsBeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MuzToolsBeApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MuzToolsBeApplication.class, args);
+    }
 
 }
