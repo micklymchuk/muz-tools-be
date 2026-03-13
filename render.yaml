@@ -5,11 +5,13 @@ services:
     plan: free
     region: frankfurt
     autoDeployTrigger: commit
-    healthCheckPath: /api/v1/tools/youtube-to-wav/capabilities
+    healthCheckPath: /api/health
     dockerfilePath: ./Dockerfile
     dockerContext: .
     envVars:
       - key: PORT
         value: "10000"
+      - key: APP_CORS_ALLOWED_ORIGIN_PATTERNS
+        value: https://*.vercel.app
       - key: YOUTUBE_WAV_STORAGE_ROOT
         value: /tmp/youtube-wav

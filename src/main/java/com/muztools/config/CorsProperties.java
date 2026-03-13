@@ -9,6 +9,7 @@ import java.util.List;
 public class CorsProperties {
 
     private List<String> allowedOrigins = new ArrayList<>(List.of("http://localhost:3000"));
+    private List<String> allowedOriginPatterns = new ArrayList<>();
     private List<String> allowedMethods = new ArrayList<>(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
     private List<String> allowedHeaders = new ArrayList<>(List.of("*"));
     private boolean allowCredentials = true;
@@ -20,6 +21,14 @@ public class CorsProperties {
 
     public void setAllowedOrigins(List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
+    }
+
+    public List<String> getAllowedOriginPatterns() {
+        return allowedOriginPatterns;
+    }
+
+    public void setAllowedOriginPatterns(List<String> allowedOriginPatterns) {
+        this.allowedOriginPatterns = allowedOriginPatterns;
     }
 
     public List<String> getAllowedMethods() {

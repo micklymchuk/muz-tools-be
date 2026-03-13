@@ -17,11 +17,18 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
-                .allowedOrigins(corsProperties.getAllowedOrigins().toArray(String[]::new))
+        var registration = registry.addMapping("/api/**")
                 .allowedMethods(corsProperties.getAllowedMethods().toArray(String[]::new))
                 .allowedHeaders(corsProperties.getAllowedHeaders().toArray(String[]::new))
                 .allowCredentials(corsProperties.isAllowCredentials())
                 .maxAge(corsProperties.getMaxAgeSeconds());
+
+        if (!corsProperties.getAllowedOrigins().isEmpty()) {
+            registration.allowedOrigins(corsProperties.getAllowedOrigins().toArray(String[]::new));
+        }
+
+        if (!corsProperties.getAllowedOriginPatterns().isEmpty()) {
+            registration.allowedOriginPatterns(corsProperties.getAllowedOriginPatterns().toArray(String[]::new));
+        }
     }
 }
