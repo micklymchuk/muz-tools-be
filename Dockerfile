@@ -17,6 +17,7 @@ WORKDIR /app
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates curl ffmpeg nodejs python3 \
+    && if [ ! -e /usr/bin/nodejs ] && [ -e /usr/bin/node ]; then ln -s /usr/bin/node /usr/bin/nodejs; fi \
     && curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp \
     && chmod +x /usr/local/bin/yt-dlp \
     && rm -rf /var/lib/apt/lists/*
