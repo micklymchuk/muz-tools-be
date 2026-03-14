@@ -34,24 +34,9 @@ public class YouTubeWavProperties {
     @Max(300)
     private int ytDlpMaxSleepIntervalSeconds;
 
-    @NotBlank
-    private String ffmpegCommand = "ffmpeg";
-
     @Min(30)
     @Max(3600)
     private long downloadTimeoutSeconds = 600;
-
-    @Min(30)
-    @Max(3600)
-    private long transcodeTimeoutSeconds = 600;
-
-    @Min(8_000)
-    @Max(192_000)
-    private int sampleRate = 44_100;
-
-    @Min(1)
-    @Max(2)
-    private int channels = 2;
 
     public String getStorageRoot() {
         return storageRoot;
@@ -117,14 +102,6 @@ public class YouTubeWavProperties {
         this.ytDlpMaxSleepIntervalSeconds = ytDlpMaxSleepIntervalSeconds;
     }
 
-    public String getFfmpegCommand() {
-        return ffmpegCommand;
-    }
-
-    public void setFfmpegCommand(String ffmpegCommand) {
-        this.ffmpegCommand = ffmpegCommand;
-    }
-
     public long getDownloadTimeoutSeconds() {
         return downloadTimeoutSeconds;
     }
@@ -133,27 +110,4 @@ public class YouTubeWavProperties {
         this.downloadTimeoutSeconds = downloadTimeoutSeconds;
     }
 
-    public long getTranscodeTimeoutSeconds() {
-        return transcodeTimeoutSeconds;
-    }
-
-    public void setTranscodeTimeoutSeconds(long transcodeTimeoutSeconds) {
-        this.transcodeTimeoutSeconds = transcodeTimeoutSeconds;
-    }
-
-    public int getSampleRate() {
-        return sampleRate;
-    }
-
-    public void setSampleRate(int sampleRate) {
-        this.sampleRate = sampleRate;
-    }
-
-    public int getChannels() {
-        return channels;
-    }
-
-    public void setChannels(int channels) {
-        this.channels = channels;
-    }
 }

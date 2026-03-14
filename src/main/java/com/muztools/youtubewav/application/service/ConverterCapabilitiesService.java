@@ -19,7 +19,7 @@ public class ConverterCapabilitiesService {
     public ConverterCapabilities getCapabilities() {
         return new ConverterCapabilities(
                 isCommandAvailable(properties.getYtDlpCommand()),
-                isCommandAvailable(properties.getFfmpegCommand())
+                isCommandAvailable("ffmpeg")
         );
     }
 

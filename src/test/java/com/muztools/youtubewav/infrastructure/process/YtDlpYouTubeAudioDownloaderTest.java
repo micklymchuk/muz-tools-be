@@ -41,7 +41,7 @@ class YtDlpYouTubeAudioDownloaderTest {
         doAnswer(invocation -> {
             Path workingDirectory = invocation.getArgument(1);
             Path downloadDirectory = Files.createDirectories(workingDirectory.resolve("download"));
-            Files.writeString(downloadDirectory.resolve("demo.webm"), "audio");
+            Files.writeString(downloadDirectory.resolve("demo.wav"), "audio");
             return null;
         }).when(commandRunner).run(any(), any(), any());
 
@@ -54,6 +54,9 @@ class YtDlpYouTubeAudioDownloaderTest {
         assertThat(commandCaptor.getValue()).containsSubsequence(
                 List.of(
                         "yt-dlp",
+                        "--no-cookies",
+                        "-x",
+                        "--audio-format", "wav",
                         "-f", "bestaudio/best",
                         "--no-playlist",
                         "-o"

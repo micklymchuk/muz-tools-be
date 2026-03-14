@@ -3,6 +3,8 @@ package com.muztools.youtubewav.infrastructure.process;
 import com.muztools.youtubewav.application.port.out.YouTubeAudioDownloader;
 import com.muztools.youtubewav.config.YouTubeWavProperties;
 import com.muztools.youtubewav.domain.DownloadedAudio;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,6 +18,8 @@ import java.util.List;
 @Component
 public class YtDlpYouTubeAudioDownloader implements YouTubeAudioDownloader {
 
+    private static final Logger log = LoggerFactory.getLogger(YtDlpYouTubeAudioDownloader.class);
+
     private final YouTubeWavProperties properties;
     private final CommandRunner commandRunner;
 
@@ -28,9 +32,13 @@ public class YtDlpYouTubeAudioDownloader implements YouTubeAudioDownloader {
     public DownloadedAudio download(String url, Path workingDirectory) {
         Path downloadDirectory = createDirectory(workingDirectory.resolve("download"));
         String outputTemplate = downloadDirectory.resolve("%(title)s.%(ext)s").toAbsolutePath().toString();
+        log.info("Preparing yt-dlp download for {} into {}", url, downloadDirectory);
 
         List<String> command = new ArrayList<>(List.of(
                 properties.getYtDlpCommand(),
+                "--no-cookies",
+                "-x",
+                "--audio-format", "wav",
                 "-f", "bestaudio/best",
                 "--no-playlist",
                 "-o", outputTemplate
@@ -59,6 +67,7 @@ public class YtDlpYouTubeAudioDownloader implements YouTubeAudioDownloader {
 
         command.add(url);
 
+        log.info("Using yt-dlp cookies: {}", properties.getYtDlpCookiesFile() != null && !properties.getYtDlpCookiesFile().isBlank());
         commandRunner.run(
                 command,
                 workingDirectory,
@@ -69,6 +78,7 @@ public class YtDlpYouTubeAudioDownloader implements YouTubeAudioDownloader {
         String fileName = downloadedFile.getFileName().toString();
         int extensionSeparator = fileName.lastIndexOf('.');
         String title = extensionSeparator > 0 ? fileName.substring(0, extensionSeparator) : fileName;
+        log.info("yt-dlp produced file {} for {}", downloadedFile, url);
         return new DownloadedAudio(downloadedFile, title);
     }
 
