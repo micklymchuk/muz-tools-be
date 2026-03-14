@@ -16,6 +16,7 @@ FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
 ARG DENO_VERSION=2.6.4
+ARG YT_DLP_CHANNEL=nightly
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates curl ffmpeg nodejs python3 unzip \
@@ -24,7 +25,8 @@ RUN apt-get update \
     && unzip /tmp/deno.zip -d /usr/local/bin \
     && chmod +x /usr/local/bin/deno \
     && rm -f /tmp/deno.zip \
-    && curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp \
+    && if [ "$YT_DLP_CHANNEL" = "nightly" ]; then YT_DLP_URL="https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/latest/download/yt-dlp"; else YT_DLP_URL="https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp"; fi \
+    && curl -L "$YT_DLP_URL" -o /usr/local/bin/yt-dlp \
     && chmod +x /usr/local/bin/yt-dlp \
     && rm -rf /var/lib/apt/lists/*
 

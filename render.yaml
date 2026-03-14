@@ -15,3 +15,9 @@ services:
         value: https://*.vercel.app
       - key: YOUTUBE_WAV_STORAGE_ROOT
         value: /tmp/youtube-wav
+      - key: YT_DLP_SLEEP_REQUESTS_SECONDS
+        value: "5"
+      - key: YT_DLP_SLEEP_INTERVAL_SECONDS
+        value: "5"
+      - key: YT_DLP_MAX_SLEEP_INTERVAL_SECONDS
+        value: "10"

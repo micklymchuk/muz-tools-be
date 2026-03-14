@@ -22,6 +22,18 @@ public class YouTubeWavProperties {
 
     private String ytDlpCookiesFile;
 
+    @Min(0)
+    @Max(300)
+    private int ytDlpSleepRequestsSeconds;
+
+    @Min(0)
+    @Max(300)
+    private int ytDlpSleepIntervalSeconds;
+
+    @Min(0)
+    @Max(300)
+    private int ytDlpMaxSleepIntervalSeconds;
+
     @NotBlank
     private String ffmpegCommand = "ffmpeg";
 
@@ -79,6 +91,30 @@ public class YouTubeWavProperties {
 
     public void setYtDlpCookiesFile(String ytDlpCookiesFile) {
         this.ytDlpCookiesFile = ytDlpCookiesFile;
+    }
+
+    public int getYtDlpSleepRequestsSeconds() {
+        return ytDlpSleepRequestsSeconds;
+    }
+
+    public void setYtDlpSleepRequestsSeconds(int ytDlpSleepRequestsSeconds) {
+        this.ytDlpSleepRequestsSeconds = ytDlpSleepRequestsSeconds;
+    }
+
+    public int getYtDlpSleepIntervalSeconds() {
+        return ytDlpSleepIntervalSeconds;
+    }
+
+    public void setYtDlpSleepIntervalSeconds(int ytDlpSleepIntervalSeconds) {
+        this.ytDlpSleepIntervalSeconds = ytDlpSleepIntervalSeconds;
+    }
+
+    public int getYtDlpMaxSleepIntervalSeconds() {
+        return ytDlpMaxSleepIntervalSeconds;
+    }
+
+    public void setYtDlpMaxSleepIntervalSeconds(int ytDlpMaxSleepIntervalSeconds) {
+        this.ytDlpMaxSleepIntervalSeconds = ytDlpMaxSleepIntervalSeconds;
     }
 
     public String getFfmpegCommand() {

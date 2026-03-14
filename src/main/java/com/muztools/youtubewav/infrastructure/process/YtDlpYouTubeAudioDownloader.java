@@ -36,6 +36,8 @@ public class YtDlpYouTubeAudioDownloader implements YouTubeAudioDownloader {
                 "-o", outputTemplate
         ));
 
+        addSleepArguments(command);
+
         if (properties.getYtDlpJsRuntimes() != null && !properties.getYtDlpJsRuntimes().isBlank()) {
             command.add("--js-runtimes");
             command.add(properties.getYtDlpJsRuntimes());
@@ -47,8 +49,12 @@ public class YtDlpYouTubeAudioDownloader implements YouTubeAudioDownloader {
         }
 
         if (properties.getYtDlpCookiesFile() != null && !properties.getYtDlpCookiesFile().isBlank()) {
+            Path cookiesFile = Path.of(properties.getYtDlpCookiesFile()).toAbsolutePath().normalize();
+            if (!Files.isRegularFile(cookiesFile) || !Files.isReadable(cookiesFile)) {
+                throw new CommandExecutionException("Configured yt-dlp cookies file is not readable: " + cookiesFile);
+            }
             command.add("--cookies");
-            command.add(properties.getYtDlpCookiesFile());
+            command.add(cookiesFile.toString());
         }
 
         command.add(url);
@@ -64,6 +70,23 @@ public class YtDlpYouTubeAudioDownloader implements YouTubeAudioDownloader {
         int extensionSeparator = fileName.lastIndexOf('.');
         String title = extensionSeparator > 0 ? fileName.substring(0, extensionSeparator) : fileName;
         return new DownloadedAudio(downloadedFile, title);
+    }
+
+    private void addSleepArguments(List<String> command) {
+        if (properties.getYtDlpSleepRequestsSeconds() > 0) {
+            command.add("--sleep-requests");
+            command.add(String.valueOf(properties.getYtDlpSleepRequestsSeconds()));
+        }
+
+        if (properties.getYtDlpSleepIntervalSeconds() > 0) {
+            command.add("--sleep-interval");
+            command.add(String.valueOf(properties.getYtDlpSleepIntervalSeconds()));
+        }
+
+        if (properties.getYtDlpMaxSleepIntervalSeconds() > 0) {
+            command.add("--max-sleep-interval");
+            command.add(String.valueOf(properties.getYtDlpMaxSleepIntervalSeconds()));
+        }
     }
 
     private Path createDirectory(Path directory) {

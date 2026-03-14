@@ -13,6 +13,10 @@ import java.util.concurrent.TimeUnit;
 public class CommandRunner {
 
     public void run(List<String> command, Path workingDirectory, Duration timeout) {
+        runAndCapture(command, workingDirectory, timeout);
+    }
+
+    public String runAndCapture(List<String> command, Path workingDirectory, Duration timeout) {
         Process process = null;
         try {
             process = new ProcessBuilder(command)
@@ -33,6 +37,8 @@ public class CommandRunner {
                         ? "Command failed: " + String.join(" ", command)
                         : output);
             }
+
+            return output;
         } catch (IOException exception) {
             String detail = exception.getMessage() == null ? "unknown IO error" : exception.getMessage();
             throw new CommandExecutionException(
