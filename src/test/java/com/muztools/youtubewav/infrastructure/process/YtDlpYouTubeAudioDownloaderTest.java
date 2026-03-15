@@ -14,7 +14,6 @@ import java.time.Duration;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
@@ -30,13 +29,11 @@ class YtDlpYouTubeAudioDownloaderTest {
     private CommandRunner commandRunner;
 
     @Test
-    void downloadShouldIncludeSleepAndCookiesArguments() throws Exception {
+    void downloadShouldIncludeSleepArguments() throws Exception {
         YouTubeWavProperties properties = new YouTubeWavProperties();
         properties.setYtDlpSleepRequestsSeconds(5);
         properties.setYtDlpSleepIntervalSeconds(5);
         properties.setYtDlpMaxSleepIntervalSeconds(10);
-        Path cookiesFile = Files.writeString(tempDir.resolve("youtube-cookies.txt"), "cookies");
-        properties.setYtDlpCookiesFile(cookiesFile.toString());
 
         doAnswer(invocation -> {
             Path workingDirectory = invocation.getArgument(1);
@@ -65,19 +62,7 @@ class YtDlpYouTubeAudioDownloaderTest {
         assertThat(commandCaptor.getValue()).containsSubsequence("--sleep-requests", "5");
         assertThat(commandCaptor.getValue()).containsSubsequence("--sleep-interval", "5");
         assertThat(commandCaptor.getValue()).containsSubsequence("--max-sleep-interval", "10");
-        assertThat(commandCaptor.getValue()).containsSubsequence("--cookies", cookiesFile.toAbsolutePath().toString());
+        assertThat(commandCaptor.getValue()).doesNotContain("--cookies");
         assertThat(commandCaptor.getValue()).contains("https://www.youtube.com/watch?v=test123");
-    }
-
-    @Test
-    void downloadShouldFailFastWhenCookiesFileIsUnreadable() {
-        YouTubeWavProperties properties = new YouTubeWavProperties();
-        properties.setYtDlpCookiesFile(tempDir.resolve("missing-cookies.txt").toString());
-
-        YtDlpYouTubeAudioDownloader downloader = new YtDlpYouTubeAudioDownloader(properties, commandRunner);
-
-        assertThatThrownBy(() -> downloader.download("https://www.youtube.com/watch?v=test123", tempDir.resolve("job")))
-                .isInstanceOf(CommandExecutionException.class)
-                .hasMessageContaining("cookies file is not readable");
     }
 }

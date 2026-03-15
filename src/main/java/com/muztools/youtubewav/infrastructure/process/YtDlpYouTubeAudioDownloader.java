@@ -56,18 +56,8 @@ public class YtDlpYouTubeAudioDownloader implements YouTubeAudioDownloader {
             command.add(properties.getYtDlpExtractorArgs());
         }
 
-        if (properties.getYtDlpCookiesFile() != null && !properties.getYtDlpCookiesFile().isBlank()) {
-            Path cookiesFile = Path.of(properties.getYtDlpCookiesFile()).toAbsolutePath().normalize();
-            if (!Files.isRegularFile(cookiesFile) || !Files.isReadable(cookiesFile)) {
-                throw new CommandExecutionException("Configured yt-dlp cookies file is not readable: " + cookiesFile);
-            }
-            command.add("--cookies");
-            command.add(cookiesFile.toString());
-        }
-
         command.add(url);
 
-        log.info("Using yt-dlp cookies: {}", properties.getYtDlpCookiesFile() != null && !properties.getYtDlpCookiesFile().isBlank());
         commandRunner.run(
                 command,
                 workingDirectory,

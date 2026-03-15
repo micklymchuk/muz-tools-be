@@ -20,8 +20,6 @@ public class YouTubeWavProperties {
 
     private String ytDlpExtractorArgs;
 
-    private String ytDlpCookiesFile;
-
     @Min(0)
     @Max(300)
     private int ytDlpSleepRequestsSeconds;
@@ -68,14 +66,6 @@ public class YouTubeWavProperties {
 
     public void setYtDlpExtractorArgs(String ytDlpExtractorArgs) {
         this.ytDlpExtractorArgs = ytDlpExtractorArgs;
-    }
-
-    public String getYtDlpCookiesFile() {
-        return ytDlpCookiesFile;
-    }
-
-    public void setYtDlpCookiesFile(String ytDlpCookiesFile) {
-        this.ytDlpCookiesFile = ytDlpCookiesFile;
     }
 
     public int getYtDlpSleepRequestsSeconds() {
